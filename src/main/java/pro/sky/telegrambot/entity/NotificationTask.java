@@ -1,12 +1,9 @@
 package pro.sky.telegrambot.entity;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.time.Instant;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
 public class NotificationTask {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

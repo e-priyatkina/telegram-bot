@@ -25,11 +25,10 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
 
-    private final Pattern NOTIFICATION_TASK_PATTERN = Pattern.compile("([\\d{2}\\.\\M{2}\\.\\y{4} \\h{2}:\\m{2})(\\s)([А-яA-z\\s\\d]+)");
+    private final Pattern notificationTaskPattern = Pattern.compile("([\\d{2}\\.\\d{2}\\.\\d{4} \\d{2}:\\d{2}])(\\s)([А-яA-z\\s\\d]+)");
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
-    @Autowired
     private TelegramBot telegramBot;
 
     private final TelegramBotClient telegramBotClient;
@@ -57,7 +56,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 if ("/start".equals(text)) {
                     telegramBotClient.sendMessage(chatId, "Отправьте задачу");
                 } else if (text != null) {
-                    Matcher matcher = NOTIFICATION_TASK_PATTERN.matcher(text);
+                    Matcher matcher = notificationTaskPattern.matcher(text);
                     if (!matcher.find()) {
                         telegramBotClient.sendMessage(
                                 chatId, """
@@ -89,7 +88,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     }
 
     @Nullable
-    private LocalDateTime parse (String datetime) {
+    private LocalDateTime parse (String dateTime) {
         try {
             return LocalDateTime.parse(dateTime, dateTimeFormatter);
         } catch (DateTimeParseException e) {
